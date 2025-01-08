@@ -25,7 +25,7 @@ public class Ball : MonoBehaviour
         transform.position += velocity * Time.deltaTime * speed;
 
         // Create prefab
-        while (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space)) 
         {
             Instantiate(predfab, transform.position + Vector3.up, Quaternion.identity);
         }
