@@ -1,7 +1,8 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerTank : MonoBehaviour, I_Damagable
+public class PlayerTank : MonoBehaviour
 {
     [SerializeField] float maxTorque = 90;
     [SerializeField] float maxForce = 1;
@@ -9,15 +10,18 @@ public class PlayerTank : MonoBehaviour, I_Damagable
     [SerializeField] GameObject rocket;
     public int ammo = 10;
     [SerializeField] TMP_Text ammoText;
+    [SerializeField] Slider healthSlider;
 
     float torque;
     float force;
 
     Rigidbody rb;
+    Destructable destructable;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        destructable = GetComponent<Destructable>();
     }
 
     void Update()
@@ -32,6 +36,12 @@ public class PlayerTank : MonoBehaviour, I_Damagable
         }
 
         ammoText.text = "Ammo: " + ammo.ToString();
+
+        healthSlider.value = destructable.Health;
+        if (destructable.Health > 0)
+        {
+            GameManager.Instance.SetGameOver();
+        }
     }
 
     // Runs at 50 fps, so no need for Delta Time
@@ -39,10 +49,5 @@ public class PlayerTank : MonoBehaviour, I_Damagable
     {
         rb.AddRelativeForce(Vector3.forward * force);
         rb.AddRelativeTorque(Vector3.up * torque);
-    }
-
-    public void ApplyDamage(float damage)
-    {
-        
     }
 }
