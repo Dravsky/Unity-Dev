@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,11 +19,12 @@ public class GameManager : MonoBehaviour
     }
 
     eState state = eState.TITLE;
-    float timer = 0;
 
     private void Awake()
     {
         instance = this;
+        winUI.SetActive(false);
+        loseUI.SetActive(false);
     }
 
     void Update()
@@ -39,10 +41,18 @@ public class GameManager : MonoBehaviour
             case eState.GAME:
                 break;
             case eState.WIN:
-                print("WIN!!!!!!!");
+                winUI.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    RestartScene();
+                }
                 break;
             case eState.LOSE:
-                print("DEADDD!");
+                loseUI.SetActive(true);
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    RestartScene();
+                }
                 break;
             default:
                 break;
@@ -58,5 +68,15 @@ public class GameManager : MonoBehaviour
     public void SetGameOver()
     { 
         state = eState.LOSE; 
+    }
+
+    public void SetGameWin()
+    {
+        state = eState.WIN;
+    }
+
+    public void RestartScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
